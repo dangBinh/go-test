@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -45,8 +46,78 @@ func wholeStory(text string) (story string) {
 	return strings.Join(matches, " ")
 }
 
+func FindShortestWord(words []string) int {
+	if len(words) == 0 {
+		return 0
+	}
+
+	shortest := len(words[0])
+	for _, word := range words {
+		if len(word) < shortest {
+			shortest = len(word)
+		}
+	}
+
+	return shortest
+}
+
+func FindLongestWord(words []string) int {
+	if len(words) == 0 {
+		return 0
+	}
+
+	longest := len(words[0])
+	for _, word := range words {
+		if len(word) > longest {
+			longest = len(word)
+		}
+	}
+
+	return longest
+}
+
+func CalcAverageWordLength(words []string) float32 {
+
+	if len(words) == 0 {
+		return 0
+	}
+
+	var total float32
+	for _, word := range words {
+		total += float32(len(word))
+	}
+	return total / float32(len(words))
+}
+
+func ListOfWordLengthEqualAverage(aWords []string, avgWordLength float32) []string {
+	var words []string
+
+	for _, word := range aWords {
+		if len(word) == int(math.Round(float64(avgWordLength))) {
+			words = append(words, word)
+		}
+	}
+
+	return words
+}
+
+// The difficulty of the function: O(n)
+//  storyStats returns stats of text
+func storyStats(text string) (int, int, float32, []string) {
+	words := wholeStory(text)
+	aWords := strings.Split(words, " ")
+	fmt.Println(aWords)
+	shortestWord := FindShortestWord(aWords)
+	longestWord := FindLongestWord(aWords)
+	avgWordLength := CalcAverageWordLength(aWords)
+	aStr := ListOfWordLengthEqualAverage(aWords, avgWordLength)
+
+	return shortestWord, longestWord, avgWordLength, aStr
+}
+
 func main() {
 	fmt.Println(testValidity("23-ab-48-caba-56-abc"))
 	fmt.Println(averageNumber("23-ab-48-caba-56-abc"))
 	fmt.Println(wholeStory("23-ab-48-caba-56-abc"))
+	fmt.Println(storyStats("23-ab-48-caba-56-abc"))
 }
