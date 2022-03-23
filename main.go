@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 // The difficulty of the function: O(n)
@@ -35,7 +36,17 @@ func averageNumber(text string) (avgNumber float32) {
 	return total / float32(length)
 }
 
+// The difficulty of the function: O(n)
+// wholeStory returns text that composed from all words
+func wholeStory(text string) (story string) {
+	re := regexp.MustCompile(`[a-z]+`)
+	matches := re.FindAllString(text, -1)
+
+	return strings.Join(matches, " ")
+}
+
 func main() {
 	fmt.Println(testValidity("23-ab-48-caba-56-abc"))
 	fmt.Println(averageNumber("23-ab-48-caba-56-abc"))
+	fmt.Println(wholeStory("23-ab-48-caba-56-abc"))
 }
