@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"math/rand"
 	"regexp"
 	"strconv"
 	"strings"
@@ -30,7 +31,6 @@ func averageNumber(text string) (avgNumber float32) {
 	}
 	var total float32
 	for _, match := range matches {
-		fmt.Println(match)
 		number, _ := strconv.ParseFloat(match, 10)
 		total += float32(number)
 	}
@@ -106,7 +106,6 @@ func ListOfWordLengthEqualAverage(aWords []string, avgWordLength float32) []stri
 func storyStats(text string) (int, int, float32, []string) {
 	words := wholeStory(text)
 	aWords := strings.Split(words, " ")
-	fmt.Println(aWords)
 	shortestWord := FindShortestWord(aWords)
 	longestWord := FindLongestWord(aWords)
 	avgWordLength := CalcAverageWordLength(aWords)
@@ -115,9 +114,42 @@ func storyStats(text string) (int, int, float32, []string) {
 	return shortestWord, longestWord, avgWordLength, aStr
 }
 
+func StringSeeder(length int) string {
+	b := make([]byte, length)
+	const charset = "abcdefghijklmnopqrstuvwxyz"
+
+	for i := range b {
+		b[i] = charset[rand.Intn(len(charset))]
+	}
+
+	return string(b)
+}
+
+// The difficulty of the function: O(n)
+func generateString(flag bool) string {
+	var testStr string
+	// Random correct string
+	if flag {
+		var aStr []string
+
+		numberOfPattern := rand.Intn(50)
+		for i := 1; i <= numberOfPattern; i++ {
+			str := strconv.Itoa(rand.Intn(100)) + "-" + StringSeeder(10)
+			aStr = append(aStr, str)
+		}
+		testStr = strings.Join(aStr, "-")
+	} else {
+		testStr = StringSeeder(100)
+	}
+
+	return testStr
+}
+
 func main() {
-	fmt.Println(testValidity("23-ab-48-caba-56-abc"))
-	fmt.Println(averageNumber("23-ab-48-caba-56-abc"))
-	fmt.Println(wholeStory("23-ab-48-caba-56-abc"))
-	fmt.Println(storyStats("23-ab-48-caba-56-abc"))
+	text := "23-ab-48-caba-56-abc"
+	fmt.Println(testValidity(text))
+	fmt.Println(averageNumber(text))
+	fmt.Println(wholeStory(text))
+	fmt.Println(storyStats(text))
+	generateString(true)
 }
